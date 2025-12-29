@@ -1,0 +1,38 @@
+enum UserType {
+  CompanyUser
+  IndividualUser
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  type UserType
+  createdAt DateTime @default(now())
+
+  companyUser CompanyUser?
+  individualUser IndividualUser?
+
+  ads AD[]
+  review Review[]
+
+  @@map("users")
+}
+
+model CompanyUser {
+  id Int     @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  name String
+  inn Int
+  legalAddress String?
+  phone String
+}
+
+model IndividualUser {
+  id Int     @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id])
+  userId Int @unique
+  firstName String
+  lastName String
+  phone String
+}

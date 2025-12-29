@@ -1,0 +1,32 @@
+enum VehicleType {
+  AutoVehicle
+  MotoVehicle
+  SpecVehicle
+}
+
+enum DriveType {
+  AWD
+  FWD
+  RWD
+}
+
+model Vehicle {
+  id Int @id @default(autoincrement())
+  name String
+  weight Int // kg
+  height Int // mm
+  width Int // mm
+  length Int // mm
+  vehicleType VehicleType
+  desc String
+  engineCapacity Int // cm3
+  isElectro Boolean
+  driveType DriveType
+  country         Country     @relation(fields: [countryId], references: [id])
+  countryId       Int
+
+  ads AD[]
+  review Review[]
+
+  @@map("vehicles")
+}
