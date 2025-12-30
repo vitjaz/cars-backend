@@ -1,4 +1,9 @@
-import { PrismaClient, VehicleType, DriveType } from './generated/client';
+import {
+  PrismaClient,
+  VehicleType,
+  DriveType,
+  Prisma,
+} from './generated/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 const adapter = new PrismaPg({
@@ -8,9 +13,14 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  console.log('Очищаем старые данные...');
+
+  await prisma.country.deleteMany();
+  await prisma.vehicle.deleteMany();
+
   console.log('Заполняем таблицу Country...');
 
-  const countriesData = [
+  const countriesData: Prisma.CountryCreateManyInput[] = [
     { Code: 'AF', Name: 'Афганистан' },
     { Code: 'AL', Name: 'Албания' },
     { Code: 'DZ', Name: 'Алжир' },
@@ -296,7 +306,7 @@ async function main() {
     where: { Code: 'CZ' },
   });
 
-  const vehiclesData = [
+  const vehiclesData: Prisma.VehicleCreateManyInput[] = [
     {
       name: 'Toyota Camry',
       weight: 1500,
